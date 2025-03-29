@@ -1,0 +1,82 @@
+import { Control, Controller } from 'react-hook-form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+
+type CustomFormFieldProps = {
+  name: string;
+  control: Control<any>;
+};
+
+export function CustomFormField({ name, control }: CustomFormFieldProps) {
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className='capitalize'>{name}</FormLabel>
+          <FormControl>
+            <Input {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+}
+
+type CustomFormSelectProps<T extends Record<string, string>> = {
+  name: string;
+  control: Control<any>;
+  items: T;
+  labelText?: string;
+  placeholder?: string;
+};
+
+export function CustomFormSelect({
+  name,
+  control,
+  items,
+  labelText,
+  placeholder = 'Select an option',
+}: CustomFormSelectProps<T>) {
+  const itemValues = Object.values(items) as string[];
+  return (
+    <div className='space-y-2'>
+      {labelText && <Label>{labelText}</Label>}
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <Select onValueChange={field.onChange} value={field.value}>
+            <SelectTrigger>
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {itemValues.map((value) => (
+                <SelectItem key={value} value={value}>
+                  {value}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      />
+    </div>
+  );
+}
+export default CustomFormSelect;
