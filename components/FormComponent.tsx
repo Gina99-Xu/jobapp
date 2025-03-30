@@ -19,9 +19,14 @@ import { Label } from './ui/label';
 type CustomFormFieldProps = {
   name: string;
   control: Control<any>;
+  disabled?: boolean;
 };
 
-export function CustomFormField({ name, control }: CustomFormFieldProps) {
+export function CustomFormField({
+  name,
+  control,
+  disabled = false,
+}: CustomFormFieldProps) {
   return (
     <FormField
       control={control}
@@ -30,7 +35,7 @@ export function CustomFormField({ name, control }: CustomFormFieldProps) {
         <FormItem>
           <FormLabel className='capitalize'>{name}</FormLabel>
           <FormControl>
-            <Input {...field} />
+            <Input {...field} disabled={disabled} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -66,7 +71,7 @@ export function CustomFormSelect({
             <SelectTrigger>
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='bg-white !important'>
               {itemValues.map((value) => (
                 <SelectItem key={value} value={value}>
                   {value}

@@ -4,10 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import {
+  CoreSkill,
   CreateAndEditJobRequestType,
   SkillLevel,
   createAndEditJobRequestSchema,
-  jobRequestBackendType,
+  jobRequestPayloadType,
 } from '@/utils/types';
 
 import { Button } from '@/components/ui/button';
@@ -15,8 +16,6 @@ import { Form } from '@/components/ui/form';
 
 import CustomFormSelect, { CustomFormField } from './FormComponent';
 import { toast } from 'sonner';
-import { MultiSkillSelect } from './MultiSkillSelect';
-import { Label } from '@radix-ui/react-dropdown-menu';
 import { CustomDatePicker } from './CustomDatePicker';
 import { useEffect } from 'react';
 
@@ -28,21 +27,21 @@ function CreateJobRequestForm() {
       talentRequestTitle: '',
       qualifications: '',
       startDate: new Date(),
-      coreSkills: [],
+      coreSkill: CoreSkill.JAVA,
       skillLevel: SkillLevel.ENTRY,
     },
   });
 
   const { mutate } = useMutation({
     mutationFn: async (data: CreateAndEditJobRequestType) => {
-      const backendData: jobRequestBackendType = {
+      const backendData: jobRequestPayloadType = {
         talentRequestTitle: data.talentRequestTitle,
         jobDescription: {
           responsibilities: data.jobDescription,
           qualifications: data.qualifications,
         },
         candidateSkills: {
-          coreSkills: data.coreSkills[0],
+          coreSkill: data.coreSkill,
           skillLevel: data.skillLevel,
         },
         startDate: data.startDate.toISOString().split('T')[0],
@@ -96,10 +95,17 @@ function CreateJobRequestForm() {
           <CustomFormField name='talentRequestTitle' control={form.control} />
           <CustomFormField name='qualifications' control={form.control} />
 
-          <div className=' space-y-2'>
+          {/* <div className=' space-y-2'>
             <Label>Core Skills</Label>
             <MultiSkillSelect name='coreSkills' control={form.control} />
-          </div>
+          </div> */}
+
+          <CustomFormSelect
+            name='coreSkill'
+            control={form.control}
+            labelText='Core Skill'
+            items={CoreSkill}
+          />
 
           <CustomFormSelect
             name='skillLevel'
