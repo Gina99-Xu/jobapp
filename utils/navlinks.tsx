@@ -28,22 +28,22 @@ const jobRequestLinks: NavLinkGroup = {
   ],
 };
 
-// const fullfillJobRequestLinks: NavLinkGroup = {
-//   title: 'Fullfill Job Request',
-//   links: [
-//     {
-//       href: '/jobfulfill/fuilfill-job-request',
-//       label: 'create job fullfillment',
-//       icon: <Layers />,
-//     },
+const userJobListNavLinks: NavLinkGroup = {
+  title: 'User Job List',
+  links: [
+    {
+      href: '/user/user-job-lists',
+      label: 'view list of user job lists',
+      icon: <AppWindow />,
+    },
 
-//     {
-//       href: '/jobfulfill/view-job-fullfill-requests',
-//       label: 'view job fullfillment requests',
-//       icon: <AppWindow />,
-//     },
-//   ],
-// };
+    {
+      href: '/user/user-job-stats',
+      label: 'view applicants stats',
+      icon: <AppWindow />,
+    },
+  ],
+};
 
 const jobPostNavLinks: NavLinkGroup = {
   title: 'Job Posts',
@@ -53,18 +53,13 @@ const jobPostNavLinks: NavLinkGroup = {
       label: 'view job post lists',
       icon: <Layers />,
     },
-
-    {
-      href: '/jobview/add-job',
-      label: 'view job post stats',
-      icon: <AppWindow />,
-    },
   ],
 };
 
 export const navLinks = {
   jobRequestLinks,
   jobPostNavLinks,
+  userJobListNavLinks,
 };
 
 export type { NavLink, NavLinkGroup };

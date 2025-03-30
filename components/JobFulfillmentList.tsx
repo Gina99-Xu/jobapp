@@ -14,13 +14,6 @@ function JobFulfillmentList() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    /*************  ✨ Codeium Command ⭐  *************/
-    /**
-     * Fetches job requests from the talent request service
-     * and stores the response in the component state.
-     * If there is an error, it sets the error state instead.
-     */
-    /******  fe9d6152-2a79-428a-b6fb-14015f83d409  *******/
     const fetchTalentRequest = async () => {
       try {
         const response = await axios.get(

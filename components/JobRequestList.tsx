@@ -45,7 +45,7 @@ function JobRequestList() {
           {jobRequestResponses.length} Job Requests Found
         </h2>
       </div>
-      <div className='grid grid-cols-1 gap-4'>
+      <div className='grid grid-cols-2 gap-6'>
         {jobRequestResponses.map((jobRequestResponse) => {
           return (
             <JobRequestCard

@@ -90,6 +90,32 @@ export type jobListPayloadType = {
   employmentType: EmploymentType;
 };
 
+export type userJobApplicantRequestPayload = {
+  firstName: string;
+  lastName: string;
+  mobileNumber: number;
+  userEmail: string;
+  jobPostId: string;
+};
+
+export const createUserJobApplicationRequestSchema = z.object({
+  firstName: z.string().min(1, {
+    message: 'first name must be at least 1 characters',
+  }),
+  lastName: z.string().min(1, {
+    message: 'last name must be at least 1 characters',
+  }),
+  mobileNumber: z.coerce.number().min(3, {
+    message: 'mobile number must be at least 3 characters',
+  }),
+  userEmail: z.string().min(1, {
+    message: 'userEmail must be at least 1 characters',
+  }),
+  jobPostId: z.string().min(1, {
+    message: 'jobpostID must be at least 1 characters',
+  }),
+});
+
 export const createAndEditJobFullfillmentRequestSchema = z.object({
   requestStatus: z.nativeEnum(RequestStatus, {
     errorMap: () => ({
@@ -135,6 +161,7 @@ export const createAndEditJobFullfillmentRequestSchema = z.object({
   talentFulfillmentId: z.string().min(1, {
     message: 'talentFulfillmentId must be not null',
   }),
+
   jobId: z.string(),
 
   startDate: z.coerce
@@ -168,6 +195,10 @@ export const createAndEditJobRequestSchema = z.object({
     .date()
     .min(new Date(), { message: 'Start date must be in the future' }),
 });
+
+export type CreateAndEditUserJobApplicationRequestType = z.infer<
+  typeof createUserJobApplicationRequestSchema
+>;
 
 export type CreateAndEditJobRequestType = z.infer<
   typeof createAndEditJobRequestSchema

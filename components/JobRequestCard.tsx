@@ -22,7 +22,7 @@ import JobInfo from './JobInfo';
 function JobRequestCard({
   jobRequestResponse,
 }: {
-  jobRequestResponse: jobFullfillmentRequestPayloadType;
+  jobRequestResponse: jobRequestResponsePayloadType;
 }) {
   const {
     talentRequestTitle,
@@ -41,7 +41,7 @@ function JobRequestCard({
         <CardTitle>{talentRequestTitle}</CardTitle>
         <CardDescription>Status: {requestStatus}</CardDescription>
       </CardHeader>
-      <CardContent className=' grid grid-cols-2 gap-4'>
+      <CardContent className='grid grid-cols-2 gap-4'>
         <JobInfo icon={<Briefcase />} text={jobDescription.qualifications} />
         <JobInfo icon={<MapPin />} text={jobDescription.qualifications} />
         <JobInfo icon={<CalendarDays />} text={startDate} />

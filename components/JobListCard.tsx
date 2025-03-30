@@ -10,9 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Separator } from './ui/separator';
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
 import JobInfo from './JobInfo';
 
 function JobListCard({
@@ -56,12 +54,15 @@ function JobListCard({
       </CardContent>
       <CardFooter className='flex gap-4'>
         <Button asChild size='sm'>
-          <Link className='bg-stone-300' href={`/`}>
-            Apply Job
+          <Link
+            className='bg-stone-300'
+            href={`/jobview/${jobPostId}/user-job-application`}
+          >
+            Apply this Job
           </Link>
         </Button>
         <Button asChild size='sm'>
-          <Link className='bg-red-500' href={`/`}>
+          <Link className='bg-red-500' href={`/user/user-job-stats`}>
             View Job Stats
           </Link>
         </Button>

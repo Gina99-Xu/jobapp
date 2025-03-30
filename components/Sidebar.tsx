@@ -53,6 +53,28 @@ export default function Sidebar() {
             ))}
           </div>
         </div>
+
+        {/**USER JOB LINKS */}
+        <div className='mb-4'>
+          <h2 className='text-lg font-bold'>
+            {navLinks.userJobListNavLinks.title}
+          </h2>
+          <div className='flex flex-col gap-y-2'>
+            {navLinks.userJobListNavLinks.links.map((link) => (
+              <div key={link.href}>
+                <Button
+                  asChild
+                  key={link.href}
+                  variant={pathname === link.href ? 'default' : 'link'}
+                >
+                  <Link href={link.href}>
+                    <span className='mr-2'>{link.icon}</span> {link.label}
+                  </Link>
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </aside>
   );
