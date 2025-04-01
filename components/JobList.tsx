@@ -1,8 +1,6 @@
 'use client';
 
-import JobRequestCard from './JobRequestCard';
 import { useEffect, useState } from 'react';
-
 import axios from 'axios';
 import {
   jobFullfillmentRequestPayloadType,

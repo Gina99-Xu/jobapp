@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/card';
 import { Separator } from './ui/separator';
 import { Button } from './ui/button';
-import { Badge } from './ui/badge';
 import JobInfo from './JobInfo';
 
 function JobFulfillmentCard({

@@ -33,15 +33,6 @@ export enum RoleLevel {
   LEADERSHIP = 'LEADERSHIP',
 }
 
-// export type JobRequestType = {
-//   jobDescription: string;
-//   talentRequestTitle: string;
-//   qualifications: string;
-//   coreSkill: CoreSkill;
-//   startDate: string;
-//   skillLevel: SkillLevel;
-// };
-
 export type jobDescriptionType = {
   responsibilities: string;
   qualifications: string;
@@ -207,6 +198,33 @@ export type CreateAndEditJobRequestType = z.infer<
 export type CreateAndEditJobFullfillmentRequestType = z.infer<
   typeof createAndEditJobFullfillmentRequestSchema
 >;
+
+export type JobStats = {
+  totalJobApplicants: number;
+  avgExperienceScore: number;
+  avgSkillsScore: number;
+  avgEducationScore: number;
+  avgOverallScore: number;
+};
+
+export type userJobApplicationData = {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  mobileNumber: number;
+  userEmail: string;
+  userJobAppliedList: userJobApplicationResultData[];
+};
+
+export type userJobApplicationResultData = {
+  userResumeAnalysisId: string;
+  jobPostId: string;
+  experienceScore: number;
+  skillsScore: number;
+  educationScore: number;
+  overallScore: number;
+  overallAnalysis: string;
+};
 
 export type JobType = {
   id: string;

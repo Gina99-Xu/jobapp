@@ -4,10 +4,7 @@ import JobRequestCard from './JobRequestCard';
 import { useEffect, useState } from 'react';
 
 import axios from 'axios';
-import {
-  jobFullfillmentRequestPayloadType,
-  jobRequestResponsePayloadType,
-} from '@/utils/types';
+import { jobFullfillmentRequestPayloadType } from '@/utils/types';
 import { useParams } from 'next/navigation';
 
 function TalentFullfillmentById() {

@@ -62,7 +62,10 @@ function JobListCard({
           </Link>
         </Button>
         <Button asChild size='sm'>
-          <Link className='bg-red-500' href={`/user/user-job-stats`}>
+          <Link
+            className='bg-red-500'
+            href={`/user/user-job-stats/${jobPostId}`}
+          >
             View Job Stats
           </Link>
         </Button>
