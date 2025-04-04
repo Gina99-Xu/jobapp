@@ -14,9 +14,9 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 
 import { CustomFormField } from './FormComponent';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Upload } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 function UserSubmitJobForm() {
@@ -27,8 +27,8 @@ function UserSubmitJobForm() {
     null
   );
   const [showGptResult, setShowGptResult] = useState(false);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const form = useForm<CreateAndEditUserJobApplicationRequestType>({
     resolver: zodResolver(createUserJobApplicationRequestSchema),
@@ -39,11 +39,19 @@ function UserSubmitJobForm() {
       userEmail: '',
       jobPostId,
     },
+    mode: 'onChange',
   });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setResumeFile(e.target.files[0]);
+      const file = e.target.files[0];
+
+      if (file.type !== 'application/pdf') {
+        toast.error('Please upload a PDF file!');
+        return;
+      }
+      setResumeFile(file);
+      toast.success('Resume uploaded successfully!');
     }
   };
 
@@ -51,12 +59,14 @@ function UserSubmitJobForm() {
     console.log('submitting form values', JSON.stringify(values, null, 2)); // Log the form values);
 
     if (!resumeFile) {
-      alert('Please upload your resume before submitting!');
+      toast.error('Please upload your resume before submitting!');
       return;
     }
 
     setIsSubmitting(true);
-    const toastId = toast.loading('submmiting job application....');
+    const toastId = toast.loading('submmiting job application....', {
+      position: 'top-center',
+    });
 
     try {
       const formData = new FormData();
@@ -95,6 +105,7 @@ function UserSubmitJobForm() {
       setGptResult(result);
       setShowGptResult(true);
 
+      toast.success('Application submitted successfully!', { id: toastId });
       console.log('gptresult is', gptResult);
       console.log('showGptResult is', showGptResult);
 
@@ -110,17 +121,21 @@ function UserSubmitJobForm() {
 
   return (
     <div className='space-y-6'>
+      <Button variant='ghost' onClick={() => router.back()}>
+        <ArrowLeft className='h-4 w-4' />
+        Back
+      </Button>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='bg-muted p-8 rounded'
+          className='bg-muted p-8 rounded-lg'
           encType='multipart/form-data'
         >
           <input type='hidden' {...form.register('jobPostId')} />
-          <h2 className='capitalize font-semibold text-4xl mb-6'>
+          <h2 className='capitalize font-semibold text-2xl mb-4'>
             Apply for Job Post: {jobPostId}
           </h2>
-          <div className='grid grid-cols-1 gap-4 items-start'>
+          <div className='grid grid-cols-1 gap-4'>
             <CustomFormField
               disabled={isSubmitting}
               name='firstName'
@@ -142,32 +157,45 @@ function UserSubmitJobForm() {
               control={form.control}
             />
             <div className='space-y-2'>
-              <label className='block text-sm font-medium text-gray-700'>
-                Resume Upload
+              <label className='block text-sm font-medium text-foreground'>
+                Resume Upload (PDF only)
+                <span className='text-destructive'>*</span>
               </label>
-              <input
-                disabled={isSubmitting}
-                type='file'
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                accept='.pdf'
-                className='block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-md file:border-0
-                file:text-sm file:font-semibold
-                file:bg-blue-50 file:text-blue-700
-                hover:file:bg-blue-100'
-              />
-              {resumeFile && (
-                <p className='text-sm text-gray-600 mt-1'>
-                  Selected file: {resumeFile.name}
-                </p>
-              )}
+              <div className='flex items-center gap-4'>
+                <Button
+                  type='button'
+                  variant={'outline'}
+                  disabled={isSubmitting}
+                  onClick={() => fileInputRef.current?.click()}
+                  className='flex items-center gap-2'
+                >
+                  <Upload className='h-4 w-4' />
+                  {resumeFile ? 'Update File' : 'Select Resume'}
+                </Button>
+                <input
+                  disabled={isSubmitting}
+                  type='file'
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept='.pdf'
+                  className='hidden'
+                />
+                {resumeFile && (
+                  <p className='text-sm text-muted-foreground'>
+                    Selected file: {resumeFile.name}
+                  </p>
+                )}
+                {!resumeFile && form.formState.isSubmitted && (
+                  <p className='text-sm text-destructive mt-1'>
+                    Please upload your resume
+                  </p>
+                )}
+              </div>
             </div>
             <Button
               disabled={isSubmitting}
               type='submit'
-              className='self-end capitalize'
+              className='mt-4 w-full bg-neutral-200 text-primary hover:bg-primary hover:bg-neutral-300'
             >
               {isSubmitting ? (
                 <>

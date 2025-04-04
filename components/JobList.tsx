@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 
 import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 function JobList() {
   const [jobListResponses, setJobListResponses] = useState<
@@ -52,7 +53,7 @@ function JobList() {
   const [coreSkillSelect, setCoreSkillSelect] = useState<CoreSkill>();
   const [roleLevelSelect, setRoleLevelSelect] = useState<RoleLevel>();
   const [skillLevelSelect, setSkillLevelSelect] = useState<SkillLevel>();
-  const [queryParams, setQueryParams] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
   const loadedJobs: jobListPayloadType[] = [];
   const params = new URLSearchParams();
 
@@ -62,13 +63,15 @@ function JobList() {
     setCoreSkillSelect(undefined);
     setRoleLevelSelect(undefined);
     setEmploymentTypeSelect(undefined);
+    setSearchTerm(undefined);
   };
   const buildQueryParam = () => {
     const hasFilters =
       employmentTypeSelect ||
       coreSkillSelect ||
       roleLevelSelect ||
-      skillLevelSelect;
+      skillLevelSelect ||
+      searchTerm;
 
     if (employmentTypeSelect) {
       params.append('employmentType', employmentTypeSelect);
@@ -83,6 +86,10 @@ function JobList() {
       params.append('skillLevel', skillLevelSelect);
     }
 
+    if (searchTerm) {
+      params.append('keyword', searchTerm);
+    }
+
     if (!hasFilters) {
       params.append('page', currentPage.toString());
       params.append('size', jobPerPage.toString());
@@ -90,6 +97,16 @@ function JobList() {
     return params;
   };
 
+  const handleSearchTermSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    console.log('before', searchTerm);
+    const formData = new FormData(e.currentTarget);
+    const search = formData.get('search') as string;
+    setSearchTerm(search);
+    params.set('keyword', search);
+    console.log('after', searchTerm);
+  };
   const handleEmploymentTypeChange = (value: EmploymentType) => {
     setCurrentPage(1);
     setEmploymentTypeSelect(value);
@@ -150,6 +167,7 @@ function JobList() {
               employmentType: responseData[key].employmentType,
             });
           }
+          console.log(loadedJobs);
 
           setTotalPages(totalPages);
           setJobListResponses(loadedJobs);
@@ -161,7 +179,7 @@ function JobList() {
 
           const response = await axios.get(url, requestOptions);
           const responseData = await response.data;
-
+          console.log(responseData);
           setJobListResponses(responseData);
           setTotalJobs(responseData.length);
           setLoading(false);
@@ -182,6 +200,7 @@ function JobList() {
     coreSkillSelect,
     roleLevelSelect,
     skillLevelSelect,
+    searchTerm,
     currentPage,
   ]);
 
@@ -194,6 +213,22 @@ function JobList() {
         <h2 className='text-xl font-semibold capitalize '>
           {totalJobs} Job Result Found
         </h2>
+      </div>
+      <div className='grid grid-cols-2 gap-4 mb-4'>
+        <form
+          className='bg-muted mb-4 grid grid-cols-3 gap-2 rounded-lg'
+          onSubmit={handleSearchTermSubmit}
+        >
+          <Input
+            type='text'
+            placeholder='Search Jobs'
+            name='search'
+            defaultValue={searchTerm}
+          />
+          <Button className='align-self-end' variant='outline' type='submit'>
+            Search
+          </Button>
+        </form>
       </div>
       <div className='flex flex-col items-start justify-center mb-4 '>
         <div className='flex flex-row gap-2'>

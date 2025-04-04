@@ -1,11 +1,29 @@
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className='flex flex-col gap-y-4'>
-      <Link href='/jobview'>Job view</Link>
-      <Link href='/jobrequest'>job request</Link>
-      <Link href='/jobfulfill'>job fullfill</Link>
+    <div className='flex items-center justify-center hero min-h-screen bg-base-200'>
+      <div className='hero-content text-center'>
+        <div className='max-w-md'>
+          <h1 className='text-6xl font-bold text-primary'>
+            AI-Job Posting Management System{' '}
+          </h1>
+          <p className='py-6 text-lg leading-loose'>
+            Job Posting Management System
+          </p>
+          <div className='flex justify-center gap-2'>
+            <Button asChild variant='secondary'>
+              <Link href='/jobview/find-all-jobposts'>View Job Lists</Link>
+            </Button>
+            <Button asChild variant='secondary'>
+              <Link href='/jobrequest/create-job-request'>
+                Create Job Request
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
