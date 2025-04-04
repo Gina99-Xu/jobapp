@@ -250,6 +250,12 @@ export enum JobMode {
   Internship = 'internship',
 }
 
+export type PaginationProps = {
+  currentPage: number;
+  totalPages: number;
+  paginate: (page: number) => void;
+};
+
 export const createAndEditJobSchema = z.object({
   position: z.string().min(2, {
     message: 'position must be at least 2 characters.',
